@@ -1,7 +1,45 @@
 .PostCard {
-  width: 500px;
-  height: 400px;
+  width: 440px;
+  margin: 10px;
   background-color: #323E59;
-  border-radius: 10px;
+  border-radius: 8px;
   overflow: hidden;
+}
+
+.post_header {
+  padding: 10px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #1e2535;
+}
+
+.poster_info {
+  display: flex;
+  align-items: center;
+}
+
+.post_footer {
+  padding: 5px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px solid #1f2636;
+}
+
+.react_btn {
+  font-size: 35px;
+  cursor: pointer;
+}
+
+@media (max-width: 993px) {
+  .PostCard {
+    width: 300px;
+  }
+}
+
+@media (max-width: 767px) {
+  .PostCard {
+    width: 100%;
+  }
 }

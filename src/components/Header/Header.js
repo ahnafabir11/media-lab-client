@@ -22,9 +22,9 @@ const Header = () => {
               </div>
             </NavLink>
             <NavLink to="/" className="link_text">Activity</NavLink>
-            <NavLink to="/" className="link_text">Users</NavLink>
+            <NavLink to="/users" className="link_text">Users</NavLink>
             <NavLink to="/" className="link_text">Chats</NavLink>
-            <NavLink to="/" className="link_text">Login</NavLink>
+            <NavLink to="/login" className="link_text">Login</NavLink>
             <NavLink to="/" className="link_text text-danger">Signout</NavLink>
           </Nav>
         </Navbar.Collapse>
