@@ -26,7 +26,14 @@ const Register = () => {
     })
 
     const onSubmit = (values) => {
-        console.log('values', values);
+        fetch(`http://localhost:5000/api/add_user`, { 
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+              },
+            body: JSON.stringify(values),
+        }).then(res => res.json())
+        .then(data => console.log(data))
     }
 
     const changeLink = () => {

@@ -16,7 +16,7 @@ const Login = () => {
 
   const validationSchema = Yup.object({
     email: Yup.string().email('enter valid email address').required('Email address required!'),
-    password: Yup.string().min(6, "Password must be at least 6 characters").required('Password required!')
+    password: Yup.string().min(6, "Password is wrong!").required('Password required!')
   })
 
   const onSubmit = (values) => {

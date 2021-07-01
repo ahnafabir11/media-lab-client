@@ -14,7 +14,7 @@ const Header = () => {
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="ml-auto align-items-center">
-            <NavLink to="/" className="d-flex align-items-center link_text">
+            <NavLink to={`/profile/60de0151d2b9d31c2c60607d`} className="d-flex align-items-center link_text">
               <Tooltip title="my profile"><Avatar alt="Taslim Khaled" src={taslimImg} /></Tooltip>
               <div className="ml-2 text-white">
                 <p className="profile_short_info">Taslim Khaled</p>
