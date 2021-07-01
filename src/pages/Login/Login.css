@@ -1,0 +1,37 @@
+.login_field_container {
+    max-width: 500px;
+    margin: 50px auto;
+    display: flex;
+    flex-direction: column;
+}
+
+.custom_input {
+    width: 100%;
+    height: 60px;
+    padding: 10px;
+    margin-top: 20px;
+    outline-width: 0;
+    border-radius: 10px;
+    background-color: #323E59;
+    color: #fff;
+    border: 0px;
+    font-size: 18px;
+}
+
+.custom_submit_btn {
+    width: 100%;
+    height: 50px;
+    margin-top: 20px;
+    border: 0px;
+    border-radius: 10px;
+    background-color: #00A3FF;
+    font-size: 18px;
+    font-weight: 500;
+    color: #fff;
+}
+
+.suggestion_link {
+    color: #00A3FF;
+    cursor: pointer;
+    text-decoration: underline;
+}
