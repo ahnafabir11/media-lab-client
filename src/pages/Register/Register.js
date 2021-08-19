@@ -18,7 +18,7 @@ const Register = () => {
     }
 
     const validationSchema = Yup.object({
-        fullname: Yup.string().min(6, 'name must be at least 6 characters').required('Your name is required!'),
+        fullname: Yup.string().min(6, 'name must be at least 6 characters').max(16, 'name must be maximun 16 characters').required('Your name is required!'),
         email: Yup.string().email('enter valid email address').required('Email address required!'),
         phoneNumber: Yup.string().matches(/^(?:\+88|88)?(01[3-9]\d{8})$/, "Enter a valid phone number").required('Your phone number is required!'),
         password: Yup.string().min(6, "Password must be at least 6 characters").required('Password is required!'),

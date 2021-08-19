@@ -1,0 +1,14 @@
+.ProfilePostCard {
+  width: 100%;
+  margin: 10px 0px;
+  background-color: #323e59;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.pofile_post_header {
+  padding: 10px 20px;
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid #1e2535;
+}

@@ -16,7 +16,7 @@ const Activity = () => {
         <PostCard 
           username="Taslim Khaled"
           userImg={taslimImg}
-          totalChips="1035503"
+          followers="556"
           followStatus="follow"
           postImg={postImg}
         />
@@ -24,7 +24,7 @@ const Activity = () => {
         <PostCard 
           username="Taslim Khaled"
           userImg={taslimImg}
-          totalChips="1035503"
+          followers="556"
           followStatus="follow"
           postImg={post2Img}
         />
@@ -32,7 +32,7 @@ const Activity = () => {
         <PostCard 
           username="Taslim Khaled"
           userImg={taslimImg}
-          totalChips="1035503"
+          followers="556"
           followStatus="follow"
           postImg={post2Img}
         />
@@ -40,7 +40,7 @@ const Activity = () => {
         <PostCard
           username="Taslim Khaled"
           userImg={taslimImg}
-          totalChips="1035503"
+          followers="556"
           followStatus="follow"
           postImg={post3Img}
         />

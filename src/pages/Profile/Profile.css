@@ -1,0 +1,30 @@
+.profile_container {
+    max-width: 600px;
+    margin: 30px auto;
+}
+
+.profile_details_top {
+    display: flex;
+    justify-content: space-between;
+    align-items: start;
+    margin-bottom: 20px;
+}
+
+.profilePicture {
+    display: block;
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+}
+
+.text_details {
+    font-size: 20px;
+    margin-bottom: 5px;
+    text-align: right;
+}
+
+.profile_middle_buttons {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}

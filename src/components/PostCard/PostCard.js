@@ -2,7 +2,6 @@ import './PostCard.css';
 import React from 'react'; 
 import { Avatar, Button, IconButton } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import { RiCopperCoinLine } from "react-icons/ri";
 import { CgSmileMouthOpen } from "react-icons/cg";
 import { CgSmileSad } from "react-icons/cg";
 
@@ -26,7 +25,7 @@ const useStyles = makeStyles({
   }
 })
 
-const PostCard = ({username, userImg, totalChips, followStatus, postImg}) => {
+const PostCard = ({username, userImg, followers, followStatus, postImg}) => {
   const classes = useStyles();
 
   return (
@@ -36,7 +35,7 @@ const PostCard = ({username, userImg, totalChips, followStatus, postImg}) => {
           <Avatar alt={username} src={userImg} />
           <div className="ml-2 text-white">
             <p className="profile_short_info">{username}</p>
-            <p className="profile_short_info"><RiCopperCoinLine /> {totalChips}</p>
+            <p className="profile_short_info"><span className="text-primary">{followers}</span> Followers</p>
           </div>
         </div>
         <div className="follow_status">
