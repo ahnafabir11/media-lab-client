@@ -1,13 +1,19 @@
 import './Login.css';
-import React from 'react';
+import React, { useContext, useState } from 'react';
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
+import Cookies from 'js-cookie'
 import { Container } from 'react-bootstrap';
 import FieldTextError from '../../components/FieldTextError/FieldTextError';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
+import { UserContext } from '../../App';
 
 const Login = () => {
+  const [,setLoggedInUser] = useContext(UserContext)
+  const [loginError, setLoginError] = useState(null)
   const history = useHistory()
+  const location = useLocation();
+  const { from } = location.state || { from: { pathname: "/" } }
 
   const initialValues = {
     email: '',
@@ -20,7 +26,23 @@ const Login = () => {
   })
 
   const onSubmit = (values) => {
-    console.log('values', values);
+    fetch(`http://localhost:5000/api/login`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json'},
+      body: JSON.stringify({...values})
+    })
+      .then(res => res.json())
+      .then(data => {
+        if(data.length !== 0) {
+          const user = data[0]
+          setLoggedInUser(user)
+          setLoginError(null)
+          Cookies.set('sid', user._id, { expires: 7 })
+          history.replace(from)
+        } else {
+          setLoginError("You have entered wrong email or password!");
+        }
+      })
   }
 
   const changeLink = () => {
@@ -68,6 +90,7 @@ const Login = () => {
             </Field>
 
             <button type="submit" className="custom_submit_btn">Login</button>
+            { loginError && <p className="text-danger text-center mb-0">{loginError}</p> }
             <p className="text-center mb-0 mt-2">don't have an account? <span className="suggestion_link" onClick={changeLink}>Register</span></p>
           </div>
         </Form>

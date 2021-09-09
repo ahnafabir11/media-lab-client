@@ -1,31 +1,46 @@
 import './Header.css';
-import React from 'react';
+import React, { useContext } from 'react';
+import Cookies from 'js-cookie';
 import {Navbar, Nav} from 'react-bootstrap';
 import { NavLink } from 'react-router-dom';
 import {Avatar, Tooltip} from '@material-ui/core';
 import { RiCopperCoinLine } from "react-icons/ri"
-import taslimImg from '../../images/taslim.png';
+import { UserContext } from '../../App';
 
 const Header = () => {
+  const [loggedInUser, setLoggedInUser] = useContext(UserContext)
+  const signOut = ()=> {
+    setLoggedInUser({})
+    Cookies.remove('sid')
+  }
+
   return (
     <div className="Header">
       <Navbar expand="lg">
-        <Navbar.Brand className="text-white">MediaLab</Navbar.Brand>
+        <Navbar.Brand><NavLink to="/" className="text-white">MediaLab</NavLink></Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="ml-auto align-items-center">
-            <NavLink to={`/profile/60de0151d2b9d31c2c60607d`} className="d-flex align-items-center link_text">
-              <Tooltip title="my profile"><Avatar alt="Taslim Khaled" src={taslimImg} /></Tooltip>
-              <div className="ml-2 text-white">
-                <p className="profile_short_info">Taslim Khaled</p>
-                <Tooltip title="chips"><p className="profile_short_info"><RiCopperCoinLine /> 1035503</p></Tooltip>
-              </div>
-            </NavLink>
-            <NavLink to="/" className="link_text">Activity</NavLink>
-            <NavLink to="/users" className="link_text">Users</NavLink>
-            <NavLink to="/" className="link_text">Chats</NavLink>
-            <NavLink to="/login" className="link_text">Login</NavLink>
-            <NavLink to="/" className="link_text text-danger">Signout</NavLink>
+            {
+              loggedInUser.email && 
+              <NavLink to={`/profile/${loggedInUser._id}`} className="d-flex align-items-center link_text">
+                <Tooltip title="my profile">
+                  <Avatar
+                    alt={loggedInUser.fullname}
+                    src={`data:image/png;base64,${loggedInUser.profileImg?.img}`}
+                  />
+                </Tooltip>
+                <div className="ml-2 text-white">
+                  <p className="profile_short_info">{loggedInUser.fullname}</p>
+                  <Tooltip title="chips"><p className="profile_short_info"><RiCopperCoinLine /> {loggedInUser.chips}</p></Tooltip>
+                </div>
+              </NavLink>
+            }
+            {loggedInUser.email && <NavLink to="/" className="link_text">Activity</NavLink>}
+            {loggedInUser.email && <NavLink to="/users" className="link_text">Users</NavLink>}
+            {loggedInUser.email && <NavLink to="/leaderboard" className="link_text">LeaderBoard</NavLink>}
+            {!loggedInUser.email && <NavLink to="/login" className="link_text">Login/Registration</NavLink>}
+            {loggedInUser.email && <p style={{cursor: 'pointer'}} className="link_text text-danger mb-0" onClick={signOut}>Signout</p>}
           </Nav>
         </Navbar.Collapse>
       </Navbar>

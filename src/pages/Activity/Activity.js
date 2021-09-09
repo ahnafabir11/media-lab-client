@@ -1,49 +1,32 @@
 import './Activity.css';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {Container} from 'react-bootstrap'
 import PostCard from '../../components/PostCard/PostCard';
-import taslimImg from '../../images/taslim.png';
-import postImg from '../../images/post-1.jpeg';
-import post2Img from '../../images/post-2.jpg';
-import post3Img from '../../images/post-3.png';
 
 const Activity = () => {
+  const [allPosts, setallPosts] = useState([])
+
+  useEffect(() => {
+    fetch(`http://localhost:5000/api/allPosts`)
+      .then(res => res.json())
+      .then(data => setallPosts(data.reverse()))
+  }, [])
+
   return (
     <Container>
       <h4 className="page_title">Activities</h4>
 
       <div className="post_container">
-        <PostCard 
-          username="Taslim Khaled"
-          userImg={taslimImg}
-          followers="556"
-          followStatus="follow"
-          postImg={postImg}
-        />
-        
-        <PostCard 
-          username="Taslim Khaled"
-          userImg={taslimImg}
-          followers="556"
-          followStatus="follow"
-          postImg={post2Img}
-        />
-        
-        <PostCard 
-          username="Taslim Khaled"
-          userImg={taslimImg}
-          followers="556"
-          followStatus="follow"
-          postImg={post2Img}
-        />
-
-        <PostCard
-          username="Taslim Khaled"
-          userImg={taslimImg}
-          followers="556"
-          followStatus="follow"
-          postImg={post3Img}
-        />
+        {
+          allPosts.map(post => 
+            <PostCard
+              key={post._id}
+              post={post}
+              useremail={post.email}
+              setallPosts={setallPosts}
+            />
+          )
+        }
       </div>
     </Container>
   );

@@ -9,6 +9,7 @@
 .user_short_info {
   display: flex;
   padding: 10px;
+  cursor: pointer;
 }
 
 .user_chips {

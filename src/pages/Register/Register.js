@@ -1,13 +1,16 @@
 import './Register.css';
-import React from 'react';
+import React, { useContext, useState } from 'react';
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { Container } from 'react-bootstrap';
 import FieldTextError from '../../components/FieldTextError/FieldTextError';
 import { useHistory } from 'react-router-dom';
+import { UserContext } from '../../App';
 
 const Register = () => {
     const history = useHistory()
+    const [exitError, setExitError] = useState(null)
+    const [, setLoggedInUser] = useContext(UserContext)
 
     const initialValues = {
         fullname: '',
@@ -26,19 +29,31 @@ const Register = () => {
     })
 
     const onSubmit = (values) => {
-        fetch(`http://localhost:5000/api/add_user`, { 
+        fetch(`http://localhost:5000/api/checkUser`, {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-              },
-            body: JSON.stringify(values),
-        }).then(res => res.json())
-        .then(data => console.log(data))
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(values)
+        })
+            .then(res => res.json())
+            .then(data => {
+                if (data.length > 0) {
+                    setExitError("Email or Phone Number already taken!")
+                } else {
+                    fetch(`http://localhost:5000/api/add_user`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(values),
+                    })
+                        .then(res => res.json())
+                        .then(data => {
+                            setExitError(null)
+                            setLoggedInUser(data)
+                            history.push(`/profile/${data._id}`)
+                        })
+                }
+            })
     }
 
-    const changeLink = () => {
-        history.push('/login')
-    }
     return (
         <Container>
             <Formik
@@ -50,87 +65,88 @@ const Register = () => {
                     <div className="login_field_container">
                         <h1 className="text-center">REGISTER</h1>
                         <Field name="fullname">
-                        {
-                            ({ field, meta }) => 
-                            <>
-                            <label className="register_field_label">Enter Your Full Name</label>
-                            <input
-                                type="text"
-                                className="register_custom_input"
-                                placeholder="Ahmed Hossen"
-                                {...field}
-                            />
-                            <ErrorMessage name="fullname" component={FieldTextError} />
-                            </>
-                        }
+                            {
+                                ({ field, meta }) =>
+                                    <>
+                                        <label className="register_field_label">Enter Your Full Name</label>
+                                        <input
+                                            type="text"
+                                            className="register_custom_input"
+                                            placeholder="Ahmed Hossen"
+                                            {...field}
+                                        />
+                                        <ErrorMessage name="fullname" component={FieldTextError} />
+                                    </>
+                            }
                         </Field>
 
                         <Field name="email">
-                        {
-                            ({ field, meta }) => 
-                            <>
-                            <label className="register_field_label">Enter Your Email Address</label>
-                            <input
-                                type="text"
-                                className="register_custom_input"
-                                placeholder="example@example.com"
-                                {...field}
-                            />
-                            <ErrorMessage name="email" component={FieldTextError} />
-                            </>
-                        }
+                            {
+                                ({ field, meta }) =>
+                                    <>
+                                        <label className="register_field_label">Enter Your Email Address</label>
+                                        <input
+                                            type="text"
+                                            className="register_custom_input"
+                                            placeholder="example@example.com"
+                                            {...field}
+                                        />
+                                        <ErrorMessage name="email" component={FieldTextError} />
+                                    </>
+                            }
                         </Field>
 
                         <Field name="phoneNumber">
-                        {
-                            ({ field, meta }) => 
-                            <>
-                            <label className="register_field_label">Enter Your Phone Number</label>
-                            <input
-                                type="text"
-                                className="register_custom_input"
-                                placeholder="01511122233"
-                                {...field}
-                            />
-                            <ErrorMessage name="phoneNumber" component={FieldTextError} />
-                            </>
-                        }
+                            {
+                                ({ field, meta }) =>
+                                    <>
+                                        <label className="register_field_label">Enter Your Phone Number</label>
+                                        <input
+                                            type="text"
+                                            className="register_custom_input"
+                                            placeholder="01511122233"
+                                            {...field}
+                                        />
+                                        <ErrorMessage name="phoneNumber" component={FieldTextError} />
+                                    </>
+                            }
                         </Field>
 
                         <Field name="password">
-                        {
-                            ({ field, meta }) => 
-                            <>
-                            <label className="register_field_label">Enter Your Password</label>
-                            <input
-                                type="password"
-                                className="register_custom_input"
-                                placeholder="Enter your password"
-                                {...field}
-                            />
-                            <ErrorMessage name="password" component={FieldTextError} />
-                            </>
-                        }
+                            {
+                                ({ field, meta }) =>
+                                    <>
+                                        <label className="register_field_label">Enter Your Password</label>
+                                        <input
+                                            type="password"
+                                            className="register_custom_input"
+                                            placeholder="Enter your password"
+                                            {...field}
+                                        />
+                                        <ErrorMessage name="password" component={FieldTextError} />
+                                    </>
+                            }
                         </Field>
 
                         <Field name="confirmPassword">
-                        {
-                            ({ field, meta }) => 
-                            <>
-                            <label className="register_field_label">Confirm Your Password</label>
-                            <input
-                                type="password"
-                                className="register_custom_input"
-                                placeholder="Repeat your password"
-                                {...field}
-                            />
-                            <ErrorMessage name="confirmPassword" component={FieldTextError} />
-                            </>
-                        }
+                            {
+                                ({ field, meta }) =>
+                                    <>
+                                        <label className="register_field_label">Confirm Your Password</label>
+                                        <input
+                                            type="password"
+                                            className="register_custom_input"
+                                            placeholder="Repeat your password"
+                                            {...field}
+                                        />
+                                        <ErrorMessage name="confirmPassword" component={FieldTextError} />
+                                    </>
+                            }
                         </Field>
 
                         <button type="submit" className="custom_submit_btn">Register</button>
-                        <p className="text-center mb-0 mt-2">already have an account? <span className="suggestion_link" onClick={changeLink}>Login</span></p>
+                        {exitError && <p className="text-danger text-center mb-0">{exitError}</p>}
+                        <p className="text-center mb-0 mt-2">already have an account? <span className="suggestion_link" onClick={() => history.push(`/login`)}>Login</span></p>
                     </div>
                 </Form>
             </Formik>
