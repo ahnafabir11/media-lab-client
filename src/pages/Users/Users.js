@@ -2,20 +2,17 @@ import './Users.css';
 import React, { useContext, useEffect, useState } from 'react';
 import { Container } from 'react-bootstrap';
 import UserCard from './../../components/UserCard/UserCard';
-import { UserContext } from '../../App';
+import { UserContext, AllUserContext } from '../../App';
 
 const Users = () => {
-  const [allUsers, setAllUsers] = useState([])
   const [loggedInUser] = useContext(UserContext)
+  const [allUsers, setAllUsers] = useContext(AllUserContext)
+  const [allUsersData, setAllUsersData] = useState(allUsers)
 
   useEffect(() => {
-    fetch(`http://localhost:5000/api/users`)
-      .then(res => res.json())
-      .then(data => {
-        const users = data.filter(user => user.email !== loggedInUser.email)
-        setAllUsers(users)
-      })
-  }, [])
+    const users = allUsers.filter(user => user.email !== loggedInUser.email)
+    setAllUsersData(users)
+  }, [allUsers])
 
   return (
     <Container>
@@ -23,8 +20,8 @@ const Users = () => {
 
       <div className="users_container">
         {
-          allUsers.map(user =>
-            <UserCard 
+          allUsersData.map(user =>
+            <UserCard
               key={user._id}
               user={user}
               setAllUsers={setAllUsers}

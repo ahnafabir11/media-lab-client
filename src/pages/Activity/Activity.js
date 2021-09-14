@@ -1,16 +1,11 @@
 import './Activity.css';
-import React, { useEffect, useState } from 'react';
+import React, { useContext } from 'react';
 import {Container} from 'react-bootstrap'
 import PostCard from '../../components/PostCard/PostCard';
+import { PostContext } from '../../App';
 
 const Activity = () => {
-  const [allPosts, setallPosts] = useState([])
-
-  useEffect(() => {
-    fetch(`http://localhost:5000/api/allPosts`)
-      .then(res => res.json())
-      .then(data => setallPosts(data.reverse()))
-  }, [])
+  const [allPosts, setAllPosts] = useContext(PostContext)
 
   return (
     <Container>
@@ -22,8 +17,7 @@ const Activity = () => {
             <PostCard
               key={post._id}
               post={post}
-              useremail={post.email}
-              setallPosts={setallPosts}
+              setAllPosts={setAllPosts}
             />
           )
         }

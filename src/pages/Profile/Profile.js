@@ -11,7 +11,7 @@ import { FaFacebookSquare } from "react-icons/fa";
 import { FaInstagramSquare } from "react-icons/fa";
 import { FaUserEdit } from "react-icons/fa";
 import { MdAddAPhoto } from "react-icons/md";
-import { UserContext } from "../../App";
+import { PostContext, UserContext } from "../../App";
 import ProfilePostCard from "../../components/ProfilePostCard/ProfilePostCard";
 import noProfileImg from '../../images/no-profile.png';
 
@@ -28,12 +28,13 @@ const useStyles = makeStyles({
   },
   followingBtn: {
     flex: 1,
-    backgroundColor: "#cad63e",
+    color: "#fff",
+    backgroundColor: "#00a3ff3d",
     fontWeight: 700,
     textTransform: "capitalize",
     "&:hover": {
-      backgroundColor: "#becf00",
-    },
+      backgroundColor: '#00a3ff3d'
+    }
   },
 });
 
@@ -42,38 +43,35 @@ const Profile = () => {
   const { id } = useParams()
   const history = useHistory()
   const [loggedInUser] = useContext(UserContext)
+  const [allPosts] = useContext(PostContext)
   const [profileData, setProfileData] = useState({})
   const [followed, setFollowed] = useState(false)
   const [userPosts, setUserPosts] = useState([])
 
   useEffect(() => {
-    fetch(`http://localhost:5000/api/users/${id}`)
+    fetch(`https://mysterious-sierra-15948.herokuapp.com/api/users/${id}`)
       .then(res => res.json())
       .then(data => {
         setProfileData(data)
         const result = data.followers.find(follower => follower === loggedInUser._id)
-        if(result !== undefined) setFollowed(true)
+        if (result !== undefined) setFollowed(true)
       })
   }, [id])
 
   useEffect(() => {
-    fetch(`http://localhost:5000/api/allPosts`)
-      .then(res => res.json())
-      .then(data => {
-        const userPosts = data.reverse().filter(posts => posts.email === profileData.email)
-        setUserPosts(userPosts)
-      })
-  }, [profileData])
+    const userPosts = allPosts.reverse().filter(posts => posts.email === profileData.email)
+    setUserPosts(userPosts)
+  }, [allPosts, profileData.email])
 
   const followUser = (userId) => {
-    fetch(`http://localhost:5000/api/followUser`, {
+    fetch(`https://mysterious-sierra-15948.herokuapp.com/api/followUser`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ following: userId, followBy: loggedInUser._id })
     })
       .then(res => res.json())
       .then(data => {
-        fetch(`http://localhost:5000/api/users/${id}`)
+        fetch(`https://mysterious-sierra-15948.herokuapp.com/api/users/${id}`)
           .then(res => res.json())
           .then(data => {
             setProfileData(data)
@@ -83,15 +81,15 @@ const Profile = () => {
       })
   }
 
-  const unFollowUser = (userId)=> {
-    fetch(`http://localhost:5000/api/unFollowUser`, {
+  const unFollowUser = (userId) => {
+    fetch(`https://mysterious-sierra-15948.herokuapp.com/api/unFollowUser`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ unFollowing: userId, unFollowBy: loggedInUser._id })
     })
       .then(res => res.json())
       .then(data => {
-        fetch(`http://localhost:5000/api/users/${id}`)
+        fetch(`https://mysterious-sierra-15948.herokuapp.com/api/users/${id}`)
           .then(res => res.json())
           .then(data => {
             setProfileData(data)
@@ -106,14 +104,14 @@ const Profile = () => {
       <div className="profile_container">
         <div className="profile_details_top">
           {
-            profileData.profileImg?.img === undefined ?
+            profileData.profileImg === "" ?
               <img
                 src={noProfileImg}
                 alt={profileData.fullname}
                 className="profilePicture"
               /> :
               <img
-                src={`data:image/png;base64,${profileData.profileImg?.img}`}
+                src={profileData.profileImg}
                 alt={profileData.fullname}
                 className="profilePicture"
               />
@@ -124,7 +122,11 @@ const Profile = () => {
               {moment(profileData.joiningDate).format('DD MMM YYYY')}
               <span className="text-primary"> Joined</span>
             </p>
-            <p className="text_details">
+            <p
+              className="text_details"
+              style={{ cursor: 'pointer' }}
+              onClick={() => history.push(`/followers/${profileData._id}`)}
+            >
               {profileData.followers?.length}{" "}
               <span className="text-primary">Followers</span>
             </p>
@@ -151,7 +153,7 @@ const Profile = () => {
                   variant="contained"
                   color="primary"
                   className={classes.followBtn}
-                  onClick={()=> followUser(profileData._id)}
+                  onClick={() => followUser(profileData._id)}
                 >
                   Follow
                 </Button>
@@ -178,12 +180,12 @@ const Profile = () => {
               loggedInUser.email === profileData.email &&
               <>
                 <IconButton
-                size="small"
-                target="blank"
-                onClick={() => history.push('/post/create')}
-                            >
-                <MdAddAPhoto size="40px" style={{ color: "#00A3FF" }} />
-                            </IconButton>
+                  size="small"
+                  target="blank"
+                  onClick={() => history.push('/post/create')}
+                >
+                  <MdAddAPhoto size="40px" style={{ color: "#00A3FF" }} />
+                </IconButton>
                 <IconButton
                   size="small"
                   target="blank"
@@ -201,10 +203,10 @@ const Profile = () => {
             <ProfilePostCard
               key={userPost._id}
               userPost={userPost}
-              postImg={userPost.postImg.img}
+              postImg={userPost.postImg}
               postDate={userPost.uploadDate}
               username={profileData.fullname}
-              userImg={profileData.profileImg?.img}
+              userImg={profileData.profileImg}
               userEmail={profileData.email}
               setUserPosts={setUserPosts}
             />

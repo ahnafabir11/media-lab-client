@@ -2,19 +2,19 @@ import React, { useContext } from 'react';
 import { Redirect, Route } from 'react-router';
 import { UserContext } from './App';
 
-const PrivateRoute = ({ children, ...rest }) => {
+const VerifiedUser = ({ children, ...rest }) => {
   const [loggedInUser] = useContext(UserContext)
 
   return (
     <Route
       {...rest}
       render={({ location }) =>
-        loggedInUser.email ? (
+        loggedInUser.verified ? (
           children
         ) : (
           <Redirect
             to={{
-              pathname: "/login",
+              pathname: "/verify",
               state: { from: location }
             }}
           />
@@ -24,4 +24,4 @@ const PrivateRoute = ({ children, ...rest }) => {
   )
 }
 
-export default PrivateRoute;
+export default VerifiedUser;

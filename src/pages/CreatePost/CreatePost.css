@@ -1,0 +1,18 @@
+.previewImg {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto;
+  max-width: 600px; 
+  max-height: 500px;
+  border: 3px dashed white;
+  border-radius: 20px;
+  padding: 50px 0px;
+}
+
+.selectedPreveiwImg {
+  max-width: 600px;
+  margin: 0 auto;
+  overflow: hidden;
+  border-radius: 20px;
+}

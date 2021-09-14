@@ -1,15 +1,20 @@
 import './Register.css';
+import * as Yup from "yup";
 import React, { useContext, useState } from 'react';
 import { Formik, Form, Field, ErrorMessage } from "formik";
-import * as Yup from "yup";
 import { Container } from 'react-bootstrap';
 import FieldTextError from '../../components/FieldTextError/FieldTextError';
 import { useHistory } from 'react-router-dom';
 import { UserContext } from '../../App';
+import Snackbar from '@material-ui/core/Snackbar';
+import MuiAlert from '@material-ui/lab/Alert';
+
+const Alert = (props) => <MuiAlert elevation={6} variant="filled" {...props} />
 
 const Register = () => {
     const history = useHistory()
-    const [exitError, setExitError] = useState(null)
+    const [alert, setAlert] = useState(false)
+    const [errorMsg, setErrorMsg] = useState(null)
     const [, setLoggedInUser] = useContext(UserContext)
 
     const initialValues = {
@@ -29,7 +34,7 @@ const Register = () => {
     })
 
     const onSubmit = (values) => {
-        fetch(`http://localhost:5000/api/checkUser`, {
+        fetch(`https://mysterious-sierra-15948.herokuapp.com/api/checkUser`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(values)
@@ -37,21 +42,29 @@ const Register = () => {
             .then(res => res.json())
             .then(data => {
                 if (data.length > 0) {
-                    setExitError("Email or Phone Number already taken!")
+                    setAlert(true)
+                    setErrorMsg("Email or Phone Number already taken!")
                 } else {
-                    fetch(`http://localhost:5000/api/add_user`, {
+                    fetch(`https://mysterious-sierra-15948.herokuapp.com/api/add_user`, {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify(values),
                     })
                         .then(res => res.json())
                         .then(data => {
-                            setExitError(null)
+                            setErrorMsg(null)
                             setLoggedInUser(data)
                             history.push(`/profile/${data._id}`)
                         })
                 }
             })
+    }
+
+    const handleCloseAlert = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+        setAlert(false)
     }
 
     return (
@@ -145,11 +158,17 @@ const Register = () => {
                         </Field>
 
                         <button type="submit" className="custom_submit_btn">Register</button>
-                        {exitError && <p className="text-danger text-center mb-0">{exitError}</p>}
-                        <p className="text-center mb-0 mt-2">already have an account? <span className="suggestion_link" onClick={() => history.push(`/login`)}>Login</span></p>
+                        <p className="text-center mb-0 mt-2">
+                            already have an account? {""}
+                            <span className="suggestion_link" onClick={() => history.push(`/login`)}>Login</span>
+                        </p>
                     </div>
                 </Form>
             </Formik>
+
+            <Snackbar open={alert} autoHideDuration={6000} onClose={handleCloseAlert}>
+                <Alert severity="error" onClose={handleCloseAlert}>{errorMsg}</Alert>
+            </Snackbar>
         </Container>
     )
 }

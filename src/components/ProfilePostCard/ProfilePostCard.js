@@ -19,14 +19,14 @@ const ProfilePostCard = ({ username, userImg, postImg, postDate, userPost, userE
   }, [])
 
   const likePost = (postId) => {
-    fetch(`http://localhost:5000/api/likePost`, {
+    fetch(`https://mysterious-sierra-15948.herokuapp.com/api/likePost`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ likedPost: postId, likedBy: loggedInUser._id })
     })
       .then(res => res.json())
       .then(data => {
-        fetch(`http://localhost:5000/api/allPosts`)
+        fetch(`https://mysterious-sierra-15948.herokuapp.com/api/allPosts`)
           .then(res => res.json())
           .then(data => {
             const userPosts = data.reverse().filter(posts => posts.email === userEmail)
@@ -38,14 +38,14 @@ const ProfilePostCard = ({ username, userImg, postImg, postDate, userPost, userE
   }
 
   const dislikePost = (postId) => {
-    fetch(`http://localhost:5000/api/dislikePost`, {
+    fetch(`https://mysterious-sierra-15948.herokuapp.com/api/dislikePost`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ dislikedPost: postId, dislikedBy: loggedInUser._id })
     })
       .then(res => res.json())
       .then(data => {
-        fetch(`http://localhost:5000/api/allPosts`)
+        fetch(`https://mysterious-sierra-15948.herokuapp.com/api/allPosts`)
           .then(res => res.json())
           .then(data => {
             const userPosts = data.reverse().filter(posts => posts.email === userEmail)
@@ -59,14 +59,14 @@ const ProfilePostCard = ({ username, userImg, postImg, postDate, userPost, userE
   return (
     <div className="ProfilePostCard">
       <div className="pofile_post_header">
-        <Avatar alt={username} src={`data:image/png;base64,${userImg}`} />
+        <Avatar alt={username} src={userImg} />
         <div className="ml-2 text-white">
           <p className="profile_short_info">{username}</p>
           <p className="profile_short_info" style={{ color: "#00A3FF" }}>{moment(postDate).format('DD MMM YYYY')}</p>
         </div>
       </div>
       <div className="w-100">
-        <img src={`data:image/png;base64,${postImg}`} alt="" className="w-100" />
+        <img src={postImg} alt="" className="w-100" />
       </div>
       <div className="post_footer">
         <p className="mb-0">

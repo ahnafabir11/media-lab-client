@@ -21,18 +21,19 @@ const useStyles = makeStyles({
     }
   },
   followingBtn: {
-    backgroundColor: '#EEFE3B',
+    backgroundColor: '#00a3ff3d',
+    color: '#fff',
     fontWeight: 700,
     textTransform: 'capitalize',
     margin: '10px auto',
     display: 'block',
     "&:hover": {
-      backgroundColor: '#becf00'
+      backgroundColor: '#00a3ff3d'
     }
   }
 })
 
-const UserCard = ({user, setAllUsers}) => {
+const UserCard = ({ user, setAllUsers }) => {
   const classes = useStyles()
   const history = useHistory()
   const [loggedInUser] = useContext(UserContext)
@@ -44,47 +45,43 @@ const UserCard = ({user, setAllUsers}) => {
   }, [user])
 
   const followUser = (userId) => {
-    fetch(`http://localhost:5000/api/followUser`, {
+    fetch(`https://mysterious-sierra-15948.herokuapp.com/api/followUser`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ following: userId, followBy: loggedInUser._id })
     })
       .then(res => res.json())
       .then(data => {
-        fetch(`http://localhost:5000/api/users`)
+        fetch(`https://mysterious-sierra-15948.herokuapp.com/api/users`)
           .then(res => res.json())
-          .then(data => {
-            const users = data.filter(user => user.email !== loggedInUser.email)
-            setAllUsers(users)
-          })
+          .then(data => setAllUsers(data))
       })
   }
 
   const unFollowUser = (userId) => {
-    fetch(`http://localhost:5000/api/unFollowUser`, {
+    fetch(`https://mysterious-sierra-15948.herokuapp.com/api/unFollowUser`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json'},
-      body: JSON.stringify({ unFollowing: userId, unFollowBy: loggedInUser._id})
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ unFollowing: userId, unFollowBy: loggedInUser._id })
     })
       .then(res => res.json())
       .then(data => {
-        fetch(`http://localhost:5000/api/users`)
+        fetch(`https://mysterious-sierra-15948.herokuapp.com/api/users`)
           .then(res => res.json())
           .then(data => {
-            const users = data.filter(user => user.email !== loggedInUser.email)
-            setAllUsers(users)
+            setAllUsers(data)
             setFollowed(false)
           })
       })
   }
-  
+
   return (
     <div className="UserCard">
       <div className="user_short_info" onClick={() => history.push(`/profile/${user._id}`)}>
         {
-          user.profileImg?.img === undefined ?
+          user.profileImg === "" ?
             <Avatar alt={user.fullname} src={noProfileImg} style={{ width: '60px', height: '60px' }} /> :
-            <Avatar alt={user.fullname} src={`data:image/png;base64,${user.profileImg?.img}`} style={{ width: '60px', height: '60px' }} />
+            <Avatar alt={user.fullname} src={user.profileImg} style={{ width: '60px', height: '60px' }} />
         }
         <div className="ml-2 text-white">
           <p className="mb-0">{user.fullname}</p>
@@ -96,21 +93,23 @@ const UserCard = ({user, setAllUsers}) => {
       </div>
       <div className="user_join_footer">
         {
-          followed ? 
+          followed ?
             <Button
               variant="contained"
               size="small"
+              disabled={loggedInUser._id === user._id ? true : false}
               className={classes.followingBtn}
               onClick={() => unFollowUser(user._id)}
-            >Following</Button> : 
+            >Following</Button> :
             <Button
               variant="contained"
               size="small"
+              disabled={loggedInUser._id === user._id ? true : false}
               className={classes.followBtn}
               onClick={() => followUser(user._id)}
             >Follow</Button>
         }
-        
+
 
         <p className="text-center">Joined {moment(user.joiningDate).format('DD MMM YYYY')}</p>
       </div>
