@@ -14,6 +14,7 @@ import { MdAddAPhoto } from "react-icons/md";
 import { PostContext, UserContext } from "../../App";
 import ProfilePostCard from "../../components/ProfilePostCard/ProfilePostCard";
 import noProfileImg from '../../images/no-profile.png';
+import Skeleton, { SkeletonTheme } from 'react-loading-skeleton';
 
 const useStyles = makeStyles({
   followBtn: {
@@ -42,6 +43,7 @@ const Profile = () => {
   const classes = useStyles()
   const { id } = useParams()
   const history = useHistory()
+  const [dataLoaded, setDataLoaded] = useState(false)
   const [loggedInUser] = useContext(UserContext)
   const [allPosts] = useContext(PostContext)
   const [profileData, setProfileData] = useState({})
@@ -53,6 +55,7 @@ const Profile = () => {
       .then(res => res.json())
       .then(data => {
         setProfileData(data)
+        setDataLoaded(true)
         const result = data.followers.find(follower => follower === loggedInUser._id)
         if (result !== undefined) setFollowed(true)
       })
@@ -103,7 +106,13 @@ const Profile = () => {
       <h3 className="page_title">{profileData.fullname}'s Profile</h3>
       <div className="profile_container">
         <div className="profile_details_top">
-          {
+          { 
+            !dataLoaded ? 
+            <div>
+                <SkeletonTheme color="#323e59" highlightColor="#31394a">
+                  <Skeleton circle={true} height={150} width={150} />
+                </SkeletonTheme>
+            </div> : 
             profileData.profileImg === "" ?
               <img
                 src={noProfileImg}
@@ -118,22 +127,35 @@ const Profile = () => {
           }
 
           <div>
-            <p className="text_details">
-              {moment(profileData.joiningDate).format('DD MMM YYYY')}
-              <span className="text-primary"> Joined</span>
-            </p>
-            <p
-              className="text_details"
-              style={{ cursor: 'pointer' }}
-              onClick={() => history.push(`/followers/${profileData._id}`)}
-            >
-              {profileData.followers?.length}{" "}
-              <span className="text-primary">Followers</span>
-            </p>
-            <p className="text_details">
-              <RiCopperCoinLine /> {" "}
-              {profileData.chips} <span className="text-primary">Chips</span>
-            </p>
+            {
+              !dataLoaded ?
+              <SkeletonTheme color="#323e59" highlightColor="#31394a">
+                  <div className="d-flex flex-column align-items-end"> 
+                    <Skeleton width={300} className="mb-3" />
+                    <Skeleton width={250} className="mb-3" />
+                    <Skeleton width={200} />
+                  </div>
+                </SkeletonTheme> :
+              <>
+                <p className="text_details">
+                  {moment(profileData.joiningDate).format('DD MMM YYYY')}
+                  <span className="text-primary"> Joined</span>
+                </p>
+                            
+                            <p
+                className="text_details"
+                style={{ cursor: 'pointer' }}
+                onClick={() => history.push(`/followers/${profileData._id}`)}
+                            >
+                {profileData.followers?.length}{" "}
+                <span className="text-primary">Followers</span>
+                            </p>
+                            <p className="text_details">
+                <RiCopperCoinLine /> {" "}
+                {profileData.chips} <span className="text-primary">Chips</span>
+                            </p>
+              </>
+            }
           </div>
         </div>
 

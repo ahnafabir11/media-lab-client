@@ -1,18 +1,28 @@
 import "./CreatePost.css";
 import moment from 'moment';
-import Cookies from 'js-cookie';
 import { format } from "date-fns";
 import React, { useContext, useState, useRef } from "react";
+import { makeStyles } from '@material-ui/core/styles';
 import { useHistory } from 'react-router-dom';
 import { PostContext, UserContext } from "../../App";
 import { Container, Form, Button } from "react-bootstrap";
 import { AiOutlineCloudUpload } from "react-icons/ai";
 import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
+import Backdrop from '@material-ui/core/Backdrop';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 const Alert = (props) => <MuiAlert elevation={6} variant="filled" {...props} />
 
+const useStyles = makeStyles((theme) => ({
+  backdrop: {
+    zIndex: theme.zIndex.drawer + 1,
+    color: '#fff',
+  },
+}))
+
 const CreatePost = () => {
+  const classes = useStyles()
   const history = useHistory()
   const selectImage = useRef()
   const [allPosts, setAllPosts] = useContext(PostContext)
@@ -21,6 +31,7 @@ const CreatePost = () => {
   const [postImg, setPostImg] = useState(null)
   const [alert, setAlert] = useState(false)
   const [alertMessage, setAlertMessage] = useState("")
+  const [loading, setLoading] = useState(false)
 
   const handleSelectedImage = (e) => {
     if (e.target.files && e.target.files.length > 0) {
@@ -40,6 +51,7 @@ const CreatePost = () => {
         const formData = new FormData()
         formData.append('file', postImg)
         formData.append('upload_preset', 'medialabpost')
+        setLoading(true)
 
         fetch('	https://api.cloudinary.com/v1_1/dpjc6l7je/image/upload', {
           method: 'POST',
@@ -67,15 +79,13 @@ const CreatePost = () => {
                 })
                   .then(res => res.json())
                   .then(data => {
+                    setLoggedInUser(data)
                     fetch(`https://mysterious-sierra-15948.herokuapp.com/api/allPosts`)
                       .then(res => res.json())
                       .then(data => {
                         setAllPosts(data.reverse())
                         history.push('/')
-                        const userId = Cookies.get('sid')
-                        fetch(`https://mysterious-sierra-15948.herokuapp.com/api/users/${userId}`)
-                          .then(res => res.json())
-                          .then(data => setLoggedInUser(data))
+                        setLoading(false)
                       })
                   })
               })
@@ -94,7 +104,7 @@ const CreatePost = () => {
     if (reason === 'clickaway') {
       return;
     }
-    setAlert(false);
+    setAlert(false)
   }
 
   return (
@@ -125,6 +135,10 @@ const CreatePost = () => {
       <Snackbar open={alert} autoHideDuration={6000} onClose={handleCloseAlert}>
         <Alert severity="error" onClose={handleCloseAlert}>{alertMessage}</Alert>
       </Snackbar>
+
+      <Backdrop className={classes.backdrop} open={loading}>
+        <CircularProgress color="primary" />
+      </Backdrop>
     </Container>
   );
 };

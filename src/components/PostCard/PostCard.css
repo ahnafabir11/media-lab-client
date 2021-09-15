@@ -1,9 +1,8 @@
 .PostCard {
-  width: 440px;
+  width: 480px;
   margin: 10px;
   background-color: #323E59;
   border-radius: 8px;
-  overflow: hidden;
 }
 
 .post_header {

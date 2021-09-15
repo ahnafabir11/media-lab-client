@@ -1,0 +1,19 @@
+.skeleton_card {
+  width: 440px;
+  margin: 10px;
+  background-color: #323E59;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+@media (max-width: 993px) {
+  .skeleton_card {
+    width: 300px;
+  }
+}
+
+@media (max-width: 767px) {
+  .skeleton_card {
+    width: 100%;
+  }
+}

@@ -26,6 +26,7 @@ function App() {
   const [loggedInUser, setLoggedInUser] = useState({})
   const [allPosts, setAllPosts] = useState([])
   const [allUsers, setAllUsers] = useState([])
+  const [dataLoaded, setDataLoaded] = useState(false)
 
   useEffect(() => {
     const userId = Cookies.get('sid')
@@ -35,7 +36,10 @@ function App() {
 
     fetch(`https://mysterious-sierra-15948.herokuapp.com/api/allPosts`)
       .then(res => res.json())
-      .then(data => setAllPosts(data.reverse()))
+      .then(data => {
+        setAllPosts(data.reverse())
+        setDataLoaded(true)
+      })
 
     fetch(`https://mysterious-sierra-15948.herokuapp.com/api/users`)
       .then(res => res.json())
@@ -79,7 +83,7 @@ function App() {
                 <Login />
               </PrivateLogin>
               <VerifiedUser path="/">
-                <Activity />
+                <Activity dataLoaded={dataLoaded} />
               </VerifiedUser>
             </Switch>
           </Router>

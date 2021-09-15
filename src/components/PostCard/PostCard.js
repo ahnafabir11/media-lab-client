@@ -143,9 +143,7 @@ const PostCard = ({ post, setAllPosts }) => {
           </div>
         </div>
       </div>
-      <div className="w-100">
-        <img src={post.postImg} alt="" className="w-100" />
-      </div>
+      <img src={post.postImg} alt="" className="w-100"/>
       <div className="post_footer">
         <p className="mb-0"><span style={{ color: '#00A3FF' }}>{post.likes?.length + post.dislikes?.length}</span> Reacts</p>
         {

@@ -1,6 +1,7 @@
 import './Register.css';
 import * as Yup from "yup";
 import React, { useContext, useState } from 'react';
+import { makeStyles } from '@material-ui/core/styles';
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import { Container } from 'react-bootstrap';
 import FieldTextError from '../../components/FieldTextError/FieldTextError';
@@ -8,14 +9,25 @@ import { useHistory } from 'react-router-dom';
 import { UserContext } from '../../App';
 import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
+import Backdrop from '@material-ui/core/Backdrop';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 const Alert = (props) => <MuiAlert elevation={6} variant="filled" {...props} />
 
+const useStyles = makeStyles((theme) => ({
+    backdrop: {
+        zIndex: theme.zIndex.drawer + 1,
+        color: '#fff',
+    },
+}))
+
 const Register = () => {
+    const classes = useStyles()
     const history = useHistory()
     const [alert, setAlert] = useState(false)
     const [errorMsg, setErrorMsg] = useState(null)
     const [, setLoggedInUser] = useContext(UserContext)
+    const [loading, setLoading] = useState(false)
 
     const initialValues = {
         fullname: '',
@@ -34,6 +46,7 @@ const Register = () => {
     })
 
     const onSubmit = (values) => {
+        setLoading(true)
         fetch(`https://mysterious-sierra-15948.herokuapp.com/api/checkUser`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -42,6 +55,7 @@ const Register = () => {
             .then(res => res.json())
             .then(data => {
                 if (data.length > 0) {
+                    setLoading(false)
                     setAlert(true)
                     setErrorMsg("Email or Phone Number already taken!")
                 } else {
@@ -52,6 +66,7 @@ const Register = () => {
                     })
                         .then(res => res.json())
                         .then(data => {
+                            setLoading(false)
                             setErrorMsg(null)
                             setLoggedInUser(data)
                             history.push(`/profile/${data._id}`)
@@ -169,6 +184,10 @@ const Register = () => {
             <Snackbar open={alert} autoHideDuration={6000} onClose={handleCloseAlert}>
                 <Alert severity="error" onClose={handleCloseAlert}>{errorMsg}</Alert>
             </Snackbar>
+
+            <Backdrop className={classes.backdrop} open={loading}>
+                <CircularProgress color="primary" />
+            </Backdrop>
         </Container>
     )
 }
