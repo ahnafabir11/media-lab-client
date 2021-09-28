@@ -4,7 +4,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router";
 import { useHistory } from "react-router-dom";
 import { Container } from "react-bootstrap";
-import { Button, IconButton } from "@material-ui/core";
+import { Button, IconButton, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { RiCopperCoinLine } from "react-icons/ri";
 import { FaFacebookSquare } from "react-icons/fa";
@@ -37,6 +37,15 @@ const useStyles = makeStyles({
       backgroundColor: '#00a3ff3d'
     }
   },
+  typoText: {
+    fontSize: "1.5rem",
+    letterSpacing: "5px",
+    borderBottom: "1px dashed #fff",
+    padding: "0.5em 0",
+    marginBottom: ".5rem",
+    fontWeight: 500,
+    lineHeight: 1.2,
+  }
 });
 
 const Profile = () => {
@@ -103,58 +112,59 @@ const Profile = () => {
 
   return (
     <Container>
-      <h3 className="page_title">{profileData.fullname}'s Profile</h3>
+      <Typography noWrap variant="h3" className={classes.typoText}>{profileData.fullname}'s Profile</Typography>
       <div className="profile_container">
         <div className="profile_details_top">
-          { 
-            !dataLoaded ? 
-            <div>
+          {
+            !dataLoaded ?
+              <div>
                 <SkeletonTheme color="#323e59" highlightColor="#31394a">
                   <Skeleton circle={true} height={150} width={150} />
                 </SkeletonTheme>
-            </div> : 
-            profileData.profileImg === "" ?
-              <img
-                src={noProfileImg}
-                alt={profileData.fullname}
-                className="profilePicture"
-              /> :
-              <img
-                src={profileData.profileImg}
-                alt={profileData.fullname}
-                className="profilePicture"
-              />
+              </div> :
+              profileData.profileImg === "" ?
+                <img
+                  src={noProfileImg}
+                  alt={profileData.fullname}
+                  className="profilePicture"
+                /> :
+                <img
+                  src={profileData.profileImg}
+                  alt={profileData.fullname}
+                  className="profilePicture"
+                />
           }
 
           <div>
             {
               !dataLoaded ?
-              <SkeletonTheme color="#323e59" highlightColor="#31394a">
-                  <div className="d-flex flex-column align-items-end"> 
+                <SkeletonTheme color="#323e59" highlightColor="#31394a">
+                  <div className="d-flex flex-column align-items-end">
                     <Skeleton width={300} className="mb-3" />
                     <Skeleton width={250} className="mb-3" />
                     <Skeleton width={200} />
                   </div>
                 </SkeletonTheme> :
-              <>
-                <p className="text_details">
-                  {moment(profileData.joiningDate).format('DD MMM YYYY')}
-                  <span className="text-primary"> Joined</span>
-                </p>
-                            
-                            <p
-                className="text_details"
-                style={{ cursor: 'pointer' }}
-                onClick={() => history.push(`/followers/${profileData._id}`)}
-                            >
-                {profileData.followers?.length}{" "}
-                <span className="text-primary">Followers</span>
-                            </p>
-                            <p className="text_details">
-                <RiCopperCoinLine /> {" "}
-                {profileData.chips} <span className="text-primary">Chips</span>
-                            </p>
-              </>
+                <>
+                  <p className="text_details">
+                    {moment(profileData.joiningDate).format('DD MMM YYYY')}
+                    <span className="text-primary"> Joined</span>
+                  </p>
+
+                  <p
+                    className="text_details"
+                    style={{ cursor: 'pointer' }}
+                    onClick={() => history.push(`/followers/${profileData._id}`)}
+                  >
+                    {profileData.followers?.length}{" "}
+                    <span className="text-primary">Followers</span>
+                  </p>
+
+                  <p className="text_details">
+                    <RiCopperCoinLine /> {" "}
+                    {profileData.chips} <span className="text-primary">Chips</span>
+                  </p>
+                </>
             }
           </div>
         </div>

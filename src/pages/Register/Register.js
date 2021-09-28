@@ -91,7 +91,7 @@ const Register = () => {
             >
                 <Form>
                     <div className="login_field_container">
-                        <h1 className="text-center">REGISTER</h1>
+                        <h1 className="text-center mt-3">REGISTER</h1>
                         <Field name="fullname">
                             {
                                 ({ field, meta }) =>

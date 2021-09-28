@@ -7,6 +7,7 @@ import { RiCopperCoinLine } from "react-icons/ri";
 import { useHistory } from 'react-router-dom';
 import noProfileImg from '../../images/no-profile.png';
 import { UserContext } from '../../App';
+import Typography from '@material-ui/core/Typography';
 
 const useStyles = makeStyles({
   followBtn: {
@@ -83,10 +84,10 @@ const UserCard = ({ user, setAllUsers }) => {
             <Avatar alt={user.fullname} src={noProfileImg} style={{ width: '60px', height: '60px' }} /> :
             <Avatar alt={user.fullname} src={user.profileImg} style={{ width: '60px', height: '60px' }} />
         }
-        <div className="ml-2 text-white">
-          <p className="mb-0">{user.fullname}</p>
-          <p className="mb-0"><span style={{ color: '#00A3FF' }}>{user.followers?.length}</span> Follower</p>
-        </div>
+          <div className="ml-2" style={{width: "112px"}}>
+            <Typography noWrap className="mb-0">{user.fullname}</Typography>
+            <p className="mb-0"><span style={{ color: '#00A3FF' }}>{user.followers?.length}</span> Follower</p>
+          </div>
       </div>
       <div className="user_chips">
         <p className="text-center mb-0"><RiCopperCoinLine /> {user.chips}</p>

@@ -67,7 +67,7 @@ const Login = () => {
       >
         <Form>
           <div className="login_field_container">
-            <h1 className="text-center">LOGIN</h1>
+            <h1 className="text-center mt-3">LOGIN</h1>
             <Field name="email">
               {
                 ({ field, meta }) =>
