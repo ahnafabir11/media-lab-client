@@ -1,9 +1,8 @@
 .skeleton_card {
-  width: 440px;
-  margin: 10px;
+  width: 300px;
+  margin: 10px 5px;
   background-color: #323E59;
   border-radius: 8px;
-  overflow: hidden;
 }
 
 @media (max-width: 993px) {

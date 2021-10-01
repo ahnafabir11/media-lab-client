@@ -17,7 +17,7 @@ const SkeletonCard = () => {
           <Skeleton height={350} />
         </div>
         <div className="d-flex align-items-center justify-content-between px-3 py-2">
-          <Skeleton width={200} />
+          <Skeleton width={180} />
           <div className="d-flex align-items-center">
             <Skeleton circle={true} height={30} width={30} />
             <p className="ml-2 mb-0">

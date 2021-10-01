@@ -17,6 +17,7 @@ import EditProfile from "./pages/EditProfile/EditProfile";
 import LeaderBoard from "./pages/LeaderBoard/LeaderBoard";
 import UserVerification from './pages/UserVerificatioin/UserVerification';
 import Followers from "./pages/Followers/Followers";
+import WebsiteLoad from "./components/WebsiteLoad/WebsiteLoad";
 
 export const UserContext = createContext()
 export const PostContext = createContext()
@@ -27,12 +28,16 @@ function App() {
   const [allPosts, setAllPosts] = useState([])
   const [allUsers, setAllUsers] = useState([])
   const [dataLoaded, setDataLoaded] = useState(false)
+  const [loginDataLoaded, setLoginDataLoaded] = useState(false)
 
   useEffect(() => {
     const userId = Cookies.get('sid')
     fetch(`https://mysterious-sierra-15948.herokuapp.com/api/users/${userId}`)
       .then(res => res.json())
-      .then(data => setLoggedInUser(data))
+      .then(data => {
+        setLoggedInUser(data)
+        setLoginDataLoaded(true)
+      })
 
     fetch(`https://mysterious-sierra-15948.herokuapp.com/api/allPosts`)
       .then(res => res.json())
@@ -50,43 +55,46 @@ function App() {
     <UserContext.Provider value={[loggedInUser, setLoggedInUser]}>
       <PostContext.Provider value={[allPosts, setAllPosts]}>
         <AllUserContext.Provider value={[allUsers, setAllUsers]}>
-          <Router>
-            <Header />
-            <Switch>
-              <VerifiedUser path="/leaderboard">
-                <LeaderBoard />
-              </VerifiedUser>
-              <VerifiedUser path="/post/create">
-                <CreatePost />
-              </VerifiedUser>
-              <VerifiedUser path="/followers/:id">
-                <Followers />
-              </VerifiedUser>
-              <VerifiedUser path="/profile/edit">
-                <EditProfile />
-              </VerifiedUser>
-              <VerifiedUser path="/profile/:id">
-                <Profile />
-              </VerifiedUser>
-              <VerifiedUser path="/users">
-                <Users />
-              </VerifiedUser>
-              <PrivateRoute path="/verify">
-                <AntiVerify path="/verify">
-                  <UserVerification />
-                </AntiVerify>
-              </PrivateRoute>
-              <PrivateLogin path="/register">
-                <Register />
-              </PrivateLogin>
-              <PrivateLogin path="/login">
-                <Login />
-              </PrivateLogin>
-              <VerifiedUser path="/">
-                <Activity dataLoaded={dataLoaded} />
-              </VerifiedUser>
-            </Switch>
-          </Router>
+          {
+            !loginDataLoaded ? <WebsiteLoad/> :
+              <Router>
+                <Header />
+                <Switch>
+                  <VerifiedUser path="/leaderboard">
+                    <LeaderBoard />
+                  </VerifiedUser>
+                  <VerifiedUser path="/post/create">
+                    <CreatePost />
+                  </VerifiedUser>
+                  <VerifiedUser path="/followers/:id">
+                    <Followers />
+                  </VerifiedUser>
+                  <VerifiedUser path="/profile/edit">
+                    <EditProfile />
+                  </VerifiedUser>
+                  <VerifiedUser path="/profile/:id">
+                    <Profile />
+                  </VerifiedUser>
+                  <VerifiedUser path="/users">
+                    <Users />
+                  </VerifiedUser>
+                  <PrivateRoute path="/verify">
+                    <AntiVerify path="/verify">
+                      <UserVerification />
+                    </AntiVerify>
+                  </PrivateRoute>
+                  <PrivateLogin path="/register">
+                    <Register />
+                  </PrivateLogin>
+                  <PrivateLogin path="/login">
+                    <Login />
+                  </PrivateLogin>
+                  <VerifiedUser path="/">
+                    <Activity dataLoaded={dataLoaded} />
+                  </VerifiedUser>
+                </Switch>
+              </Router>
+          }
         </AllUserContext.Provider>
       </PostContext.Provider>
     </UserContext.Provider>

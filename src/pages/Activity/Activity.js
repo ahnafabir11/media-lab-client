@@ -31,6 +31,8 @@ const Activity = ({ dataLoaded }) => {
           <SkeletonCard />
           <SkeletonCard />
           <SkeletonCard />
+          <SkeletonCard />
+          <SkeletonCard />
         </div>
       }
     </Container>
