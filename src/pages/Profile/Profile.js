@@ -235,8 +235,6 @@ const Profile = () => {
             <ProfilePostCard
               key={userPost._id}
               userPost={userPost}
-              postImg={userPost.postImg}
-              postDate={userPost.uploadDate}
               username={profileData.fullname}
               userImg={profileData.profileImg}
               userEmail={profileData.email}

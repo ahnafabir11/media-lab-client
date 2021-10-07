@@ -55,17 +55,20 @@ const LeaderBoard = () => {
             <th>Chips</th>
           </tr>
         </thead>
+        
         <tbody className="text-white text-center">
           {
             userData.map((user, idx) =>
               <tr key={user._id}>
                 <th>{idx + 1}</th>
-                <th className="d-flex align-items-center">
+                <th 
+                  style={{ cursor: 'pointer' }}
+                  className="d-flex align-items-center"
+                  onClick={() => history.push(`/profile/${user._id}`)}
+                >
                   <Avatar
                     alt={user?.fullname}
                     src={user.profileImg}
-                    style={{ cursor: 'pointer' }}
-                    onClick={() => history.push(`/profile/${user._id}`)}
                   />
                   <p className="mb-0 ml-3">{user.fullname}</p>
                 </th>

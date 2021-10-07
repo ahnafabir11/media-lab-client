@@ -61,7 +61,8 @@ const CreatePost = () => {
           .then(data => {
             const postData = {
               email: loggedInUser.email,
-              postImg: data.secure_url
+              postImg: data.secure_url,
+              public_id: data.public_id,
             }
 
             fetch(`https://mysterious-sierra-15948.herokuapp.com/api/createPost`, {
