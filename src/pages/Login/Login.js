@@ -9,6 +9,8 @@ import FieldTextError from '../../components/FieldTextError/FieldTextError';
 import { UserContext } from '../../App';
 import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
+import { IconButton } from '@material-ui/core';
+import { FaEye } from 'react-icons/fa';
 
 const Alert = (props) => <MuiAlert elevation={6} variant="filled" {...props} />
 
@@ -19,6 +21,12 @@ const Login = () => {
   const [alert, setAlert] = useState(false)
   const [loginError, setLoginError] = useState(null)
   const { from } = location.state || { from: { pathname: "/" } }
+  const [inputType, setInputType] = useState('password')
+
+  const changeInputType = (input) => {
+    if(inputType === 'password') setInputType('text')
+    if(inputType === 'text') setInputType('password')
+  }
 
   const initialValues = {
     email: '',
@@ -87,12 +95,17 @@ const Login = () => {
               {
                 ({ field, meta }) =>
                   <>
-                    <input
-                      type="password"
-                      className="custom_input"
-                      placeholder="Enter your password"
-                      {...field}
-                    />
+                    <div className="password_input_container">
+                      <input
+                        type={inputType}
+                        className="custom_input"
+                        placeholder="Enter your password"
+                        {...field}
+                      />
+                      <IconButton className="show_password_icon_login" onClick={changeInputType}>
+                        <FaEye color="#00A3FF" size="20px" />
+                      </IconButton>
+                    </div>
                     <ErrorMessage name="password" component={FieldTextError} />
                   </>
               }

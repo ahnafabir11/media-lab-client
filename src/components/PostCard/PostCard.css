@@ -1,4 +1,5 @@
 .PostCard {
+  width: 100%;
   background-color: #323E59;
   border-radius: 8px;
 }
@@ -27,16 +28,4 @@
 .react_btn {
   font-size: 35px;
   cursor: pointer;
-}
-
-@media (max-width: 993px) {
-  .PostCard {
-    width: 300px;
-  }
-}
-
-@media (max-width: 767px) {
-  .PostCard {
-    width: 100%;
-  }
 }

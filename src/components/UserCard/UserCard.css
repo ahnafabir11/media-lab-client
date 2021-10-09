@@ -1,5 +1,5 @@
 .UserCard {
-  width: 200px;
+  width: 250px;
   margin: 10px;
   background: #323E59;
   border-radius: 5px;
@@ -8,12 +8,51 @@
 
 .user_short_info {
   display: flex;
-  padding: 10px;
   cursor: pointer;
   align-items: center;
+  cursor: pointer;
+  margin: 10px;
+}
+
+.user_card_avater {
+  width: 60px !important;
+  height: 60px !important;
 }
 
 .user_chips {
   padding: 5px 0px;
   background : #1E273C;
+}
+
+@media (max-width: 767px) {
+  .UserCard {
+    width: 230px;
+  }
+}
+@media (max-width: 767px) {
+  .UserCard {
+    width: 200px;
+  }
+}
+
+@media (max-width: 469px) {
+  .UserCard {
+    width: 180px;
+  }
+
+  .user_card_avater {
+    width: 40px !important;
+    height: 40px !important;
+  }
+}
+
+@media (max-width: 429px) {
+  .UserCard {
+    width: 100%;
+  }
+
+  .user_card_avater {
+    width: 60px !important;
+    height: 60px !important;
+  }
 }

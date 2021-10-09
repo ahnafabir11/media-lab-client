@@ -1,18 +1,4 @@
 .skeleton_card {
-  width: 300px;
-  margin: 10px 5px;
   background-color: #323E59;
   border-radius: 8px;
-}
-
-@media (max-width: 993px) {
-  .skeleton_card {
-    width: 300px;
-  }
-}
-
-@media (max-width: 767px) {
-  .skeleton_card {
-    width: 100%;
-  }
 }

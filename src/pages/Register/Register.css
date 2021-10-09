@@ -14,3 +14,15 @@
     margin-bottom: 5px;
     margin-top: 15px;
 }
+
+.password_input_container {
+    position: relative;
+}
+
+.show_password_icon {
+    padding: 19px !important;
+    position: absolute !important;
+    top: 0;
+    right: 0;
+    bottom: 0;
+}

@@ -4,7 +4,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router";
 import { useHistory } from "react-router-dom";
 import { Container } from "react-bootstrap";
-import { Button, IconButton, Typography } from "@material-ui/core";
+import { Button, IconButton, Tooltip, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { RiCopperCoinLine } from "react-icons/ri";
 import { FaFacebookSquare } from "react-icons/fa";
@@ -112,16 +112,16 @@ const Profile = () => {
 
   return (
     <Container>
-      <Typography noWrap variant="h3" className={classes.typoText}>{profileData.fullname}'s Profile</Typography>
+      <h4 className="page_title" style={{ minWidth: 0, display: 'flex' }}>
+        <Typography noWrap variant="span">{profileData.fullname}</Typography>'s Profile
+      </h4>
       <div className="profile_container">
         <div className="profile_details_top">
           {
             !dataLoaded ?
-              <div>
-                <SkeletonTheme color="#323e59" highlightColor="#31394a">
-                  <Skeleton circle={true} height={150} width={150} />
-                </SkeletonTheme>
-              </div> :
+              <SkeletonTheme color="#323e59" highlightColor="#31394a">
+                <Skeleton circle={true} height={150} width={150} className="mr-2" />
+              </SkeletonTheme> :
               profileData.profileImg === "" ?
                 <img
                   src={noProfileImg}
@@ -135,7 +135,7 @@ const Profile = () => {
                 />
           }
 
-          <div>
+          <div className="overflow-hidden">
             {
               !dataLoaded ?
                 <SkeletonTheme color="#323e59" highlightColor="#31394a">
@@ -193,38 +193,48 @@ const Profile = () => {
               <></>
           }
           <div className="ml-auto">
-            <IconButton
-              size="small"
-              href={profileData?.social?.fbLink}
-              target="blank"
-            >
-              <FaFacebookSquare size="40px" style={{ color: "#00A3FF" }} />
-            </IconButton>
-            <IconButton
-              size="small"
-              href={profileData?.social?.igLink}
-              target="blank"
-            >
-              <FaInstagramSquare size="40px" style={{ color: "#00A3FF" }} />
-            </IconButton>
+            <Tooltip title="facebook profile">
+              <IconButton
+                size="small"
+                href={profileData?.social?.fbLink}
+                target="blank"
+              >
+                <FaFacebookSquare size="40px" style={{ color: "#00A3FF" }} />
+              </IconButton>
+            </Tooltip>
+
+            <Tooltip title="instagram profile">
+              <IconButton
+                size="small"
+                href={profileData?.social?.igLink}
+                target="blank"
+              >
+                <FaInstagramSquare size="40px" style={{ color: "#00A3FF" }} />
+              </IconButton>
+            </Tooltip>
 
             {
               loggedInUser.email === profileData.email &&
               <>
-                <IconButton
-                  size="small"
-                  target="blank"
-                  onClick={() => history.push('/post/create')}
-                >
-                  <MdAddAPhoto size="40px" style={{ color: "#00A3FF" }} />
-                </IconButton>
-                <IconButton
-                  size="small"
-                  target="blank"
-                  onClick={() => history.push(`/profile/edit`)}
-                >
-                  <FaUserEdit size="40px" style={{ color: "#ffc107" }} />
-                </IconButton>
+                <Tooltip title="upload photo">
+                  <IconButton
+                    size="small"
+                    target="blank"
+                    onClick={() => history.push('/post/create')}
+                  >
+                    <MdAddAPhoto size="40px" style={{ color: "#00A3FF" }} />
+                  </IconButton>
+                </Tooltip>
+
+                <Tooltip title="edit profile">
+                  <IconButton
+                    size="small"
+                    target="blank"
+                    onClick={() => history.push(`/profile/edit`)}
+                  >
+                    <FaUserEdit size="40px" style={{ color: "#ffc107" }} />
+                  </IconButton>
+                </Tooltip>
               </>
             }
           </div>

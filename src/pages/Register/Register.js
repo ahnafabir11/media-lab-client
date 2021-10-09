@@ -11,6 +11,9 @@ import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
 import Backdrop from '@material-ui/core/Backdrop';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import { IconButton } from '@material-ui/core';
+import { FaEye } from 'react-icons/fa';
+
 
 const Alert = (props) => <MuiAlert elevation={6} variant="filled" {...props} />
 
@@ -28,6 +31,15 @@ const Register = () => {
     const [errorMsg, setErrorMsg] = useState(null)
     const [, setLoggedInUser] = useContext(UserContext)
     const [loading, setLoading] = useState(false)
+    const [inputType, setInputType] = useState({pass: 'password', conPass: 'password'})
+
+    const changeInputType = (input) => {
+        if (inputType.pass === 'password' && input === 'pass') setInputType({...inputType, pass: 'text'})
+        if (inputType.pass === 'text' && input === 'pass') setInputType({ ...inputType, pass: 'password' })
+
+        if (inputType.conPass === 'password' && input === 'con_pass') setInputType({ ...inputType, conPass: 'text' })
+        if (inputType.conPass === 'text' && input === 'con_pass') setInputType({ ...inputType, conPass: 'password' })
+    }
 
     const initialValues = {
         fullname: '',
@@ -145,12 +157,17 @@ const Register = () => {
                                 ({ field, meta }) =>
                                     <>
                                         <label className="register_field_label">Enter Your Password</label>
-                                        <input
-                                            type="password"
-                                            className="register_custom_input"
-                                            placeholder="Enter your password"
-                                            {...field}
-                                        />
+                                        <div className="password_input_container">
+                                            <input
+                                                type={inputType.pass}
+                                                className="register_custom_input"
+                                                placeholder="Enter your password"
+                                                {...field}
+                                            />
+                                            <IconButton className="show_password_icon" onClick={()=> changeInputType('pass')}>
+                                                <FaEye color="#00A3FF" size="20px" />
+                                            </IconButton>
+                                        </div>
                                         <ErrorMessage name="password" component={FieldTextError} />
                                     </>
                             }
@@ -161,12 +178,17 @@ const Register = () => {
                                 ({ field, meta }) =>
                                     <>
                                         <label className="register_field_label">Confirm Your Password</label>
-                                        <input
-                                            type="password"
-                                            className="register_custom_input"
-                                            placeholder="Repeat your password"
-                                            {...field}
-                                        />
+                                        <div className="password_input_container">
+                                            <input
+                                                type={inputType.conPass}
+                                                className="register_custom_input"
+                                                placeholder="Repeat your password"
+                                                {...field}
+                                            />
+                                            <IconButton className="show_password_icon" onClick={()=> changeInputType('con_pass')}>
+                                                <FaEye color="#00A3FF" size="20px" />
+                                            </IconButton>
+                                        </div>
                                         <ErrorMessage name="confirmPassword" component={FieldTextError} />
                                     </>
                             }

@@ -11,8 +11,8 @@ const Activity = ({ dataLoaded }) => {
 
   const breakpoints = {
     default: 3,
-    1010: 2,
-    575: 1
+    993: 2,
+    767: 1
   }
 
   return (
@@ -37,14 +37,18 @@ const Activity = ({ dataLoaded }) => {
 
       {
         !dataLoaded &&
-        <div className="post_container">
+        <Masonry
+          breakpointCols={breakpoints}
+          className="my-masonry-grid"
+          columnClassName="my-masonry-grid_column"
+        >
           <SkeletonCard />
           <SkeletonCard />
           <SkeletonCard />
           <SkeletonCard />
           <SkeletonCard />
           <SkeletonCard />
-        </div>
+        </Masonry>
       }
     </Container>
   );

@@ -141,34 +141,45 @@ const Header = () => {
               </div>
 
               <div className={classes.sectionDesktop}>
-                <IconButton
-                  size="medium"
-                  color="inherit"
-                  onClick={() => navigatePage("/")}
-                >
-                  <MdPhotoLibrary size="30px" />
-                </IconButton>
-                <IconButton
-                  size="medium"
-                  color="inherit"
-                  onClick={() => navigatePage("/users")}
-                >
-                  <MdPeople size="30px" />
-                </IconButton>
-                <IconButton
-                  size="medium"
-                  color="inherit"
-                  onClick={() => navigatePage("/leaderboard")}
-                >
-                  <MdEqualizer size="30px" />
-                </IconButton>
-                <IconButton
-                  size="medium"
-                  color="inherit"
-                  onClick={signOut}
-                >
-                  <MdExitToApp size="30px" className="text-danger" />
-                </IconButton>
+                <Tooltip title="activity">
+                  <IconButton
+                    size="medium"
+                    color="inherit"
+                    onClick={() => navigatePage("/")}
+                  >
+                    <MdPhotoLibrary size="30px" />
+                  </IconButton>
+                </Tooltip>
+
+                <Tooltip title="users">
+                  <IconButton
+                    size="medium"
+                    color="inherit"
+                    onClick={() => navigatePage("/users")}
+                  >
+                    <MdPeople size="30px" />
+                  </IconButton>
+                </Tooltip>
+
+                <Tooltip title="leaderboard">
+                  <IconButton
+                    size="medium"
+                    color="inherit"
+                    onClick={() => navigatePage("/leaderboard")}
+                  >
+                    <MdEqualizer size="30px" />
+                  </IconButton>
+                </Tooltip>
+
+                <Tooltip title="sign out">
+                  <IconButton
+                    size="medium"
+                    color="inherit"
+                    onClick={signOut}
+                  >
+                    <MdExitToApp size="30px" className="text-danger" />
+                  </IconButton>
+                </Tooltip>
               </div>
 
               <div className={classes.sectionMobile}>

@@ -1,13 +1,12 @@
 .profile_container {
     max-width: 600px;
-    margin: 30px auto;
+    margin: 20px auto;
 }
 
 .profile_details_top {
     display: flex;
     justify-content: space-between;
-    align-items: flex-start;
-    margin-bottom: 20px;
+    align-items: center;
 }
 
 .profilePicture {
@@ -15,6 +14,7 @@
     width: 150px;
     height: 150px;
     border-radius: 50%;
+    margin-right: 2rem;
 }
 
 .text_details {
@@ -27,4 +27,16 @@
     display: flex;
     align-items: center;
     margin-bottom: 20px;
+}
+
+@media (max-width: 383px) {
+    .profilePicture {
+        width: 120px;
+        height: 120px;
+        margin-right: 1rem;
+    }
+
+    .text_details {
+        font-size: 16px;
+    }
 }

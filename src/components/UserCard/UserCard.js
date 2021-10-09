@@ -81,13 +81,13 @@ const UserCard = ({ user, setAllUsers }) => {
       <div className="user_short_info" onClick={() => history.push(`/profile/${user._id}`)}>
         {
           user.profileImg === "" ?
-            <Avatar alt={user.fullname} src={noProfileImg} style={{ width: '60px', height: '60px' }} /> :
-            <Avatar alt={user.fullname} src={user.profileImg} style={{ width: '60px', height: '60px' }} />
+            <Avatar alt={user.fullname} src={noProfileImg} className="user_card_avater" /> :
+            <Avatar alt={user.fullname} src={user.profileImg} className="user_card_avater" />
         }
-          <div className="ml-2" style={{width: "112px"}}>
-            <Typography noWrap className="mb-0">{user.fullname}</Typography>
-            <p className="mb-0"><span style={{ color: '#00A3FF' }}>{user.followers?.length}</span> Follower</p>
-          </div>
+        <div className="ml-2" style={{minWidth: 0}}>
+          <Typography noWrap className="mb-0">{user.fullname}</Typography>
+          <p className="mb-0"><span style={{ color: '#00A3FF' }}>{user.followers?.length}</span> Follower</p>
+        </div>
       </div>
       <div className="user_chips">
         <p className="text-center mb-0"><RiCopperCoinLine /> {user.chips}</p>
