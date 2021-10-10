@@ -6,7 +6,7 @@ import { Avatar, IconButton, Menu, MenuItem } from "@material-ui/core";
 import { CgSmileMouthOpen } from "react-icons/cg";
 import { BsThreeDotsVertical } from 'react-icons/bs';
 import { CgSmileSad } from "react-icons/cg";
-import { UserContext } from "../../App";
+import { PostContext, UserContext } from "../../App";
 import Backdrop from '@material-ui/core/Backdrop';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
@@ -20,10 +20,12 @@ const useStyles = makeStyles((theme) => ({
 const ProfilePostCard = ({ username, userImg, userPost, userEmail, setUserPosts }) => {
   const classes = useStyles()
   const [anchorEl, setAnchorEl] = useState(null)
-  const [loggedInUser] = useContext(UserContext)
+  const [loggedInUser, setLoggedInUser] = useContext(UserContext)
+  const [, setAllPosts] = useContext(PostContext)
   const [liked, setLiked] = useState(false)
   const [disLiked, setDisLiked] = useState(false)
   const [loading, setLoading] = useState(false)
+  const [reactingPost, setReactingPost] = useState(false)
 
   const handleClick = (event) => setAnchorEl(event.currentTarget)
   const handleClose = () => setAnchorEl(null)
@@ -41,6 +43,7 @@ const ProfilePostCard = ({ username, userImg, userPost, userEmail, setUserPosts 
         fetch(`https://mysterious-sierra-15948.herokuapp.com/api/allPosts`)
           .then(res => res.json())
           .then(data => {
+            setAllPosts(data.reverse())
             const userPosts = data.reverse().filter(posts => posts.email === userEmail)
             setUserPosts(userPosts)
             setLoading(false)
@@ -56,41 +59,114 @@ const ProfilePostCard = ({ username, userImg, userPost, userEmail, setUserPosts 
   }, [])
 
   const likePost = (postId) => {
-    fetch(`https://mysterious-sierra-15948.herokuapp.com/api/likePost`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ likedPost: postId, likedBy: loggedInUser._id })
-    })
-      .then(res => res.json())
-      .then(data => {
-        fetch(`https://mysterious-sierra-15948.herokuapp.com/api/allPosts`)
-          .then(res => res.json())
-          .then(data => {
-            const userPosts = data.reverse().filter(posts => posts.email === userEmail)
-            setUserPosts(userPosts)
-            setLiked(true)
-            setDisLiked(false)
-          })
+    setReactingPost(true)
+    const onceLiked = userPost.likes.find(userId => userId === loggedInUser._id)
+    const oncedisLiked = userPost.dislikes.find(userId => userId === loggedInUser._id)
+
+    if (onceLiked || oncedisLiked) {
+      fetch(`https://mysterious-sierra-15948.herokuapp.com/api/likePost`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ likedPost: postId, likedBy: loggedInUser._id })
       })
+        .then(res => res.json())
+        .then(data => {
+          fetch(`https://mysterious-sierra-15948.herokuapp.com/api/allPosts`)
+            .then(res => res.json())
+            .then(data => {
+              setAllPosts(data.reverse())
+              const userPosts = data.reverse().filter(posts => posts.email === userEmail)
+              setUserPosts(userPosts)
+              setLiked(true)
+              setDisLiked(false)
+              setReactingPost(false)
+            })
+        })
+    } else {
+      fetch(`https://mysterious-sierra-15948.herokuapp.com/api/likePost`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ likedPost: postId, likedBy: loggedInUser._id })
+      })
+        .then(res => res.json())
+        .then(data => {
+          const totalChips = loggedInUser.chips + 10;
+          fetch(`https://mysterious-sierra-15948.herokuapp.com/api/updateProfile`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ id: loggedInUser._id, chips: totalChips }),
+          })
+            .then(res => res.json())
+            .then(data => {
+              setLoggedInUser(data)
+              fetch(`https://mysterious-sierra-15948.herokuapp.com/api/allPosts`)
+                .then(res => res.json())
+                .then(data => {
+                  setAllPosts(data.reverse())
+                  const userPosts = data.reverse().filter(posts => posts.email === userEmail)
+                  setUserPosts(userPosts)
+                  setLiked(true)
+                  setDisLiked(false)
+                  setReactingPost(false)
+                })
+            })
+        })
+    }
   }
 
   const dislikePost = (postId) => {
-    fetch(`https://mysterious-sierra-15948.herokuapp.com/api/dislikePost`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ dislikedPost: postId, dislikedBy: loggedInUser._id })
-    })
-      .then(res => res.json())
-      .then(data => {
-        fetch(`https://mysterious-sierra-15948.herokuapp.com/api/allPosts`)
-          .then(res => res.json())
-          .then(data => {
-            const userPosts = data.reverse().filter(posts => posts.email === userEmail)
-            setUserPosts(userPosts)
-            setLiked(false)
-            setDisLiked(true)
-          })
+    setReactingPost(true)
+    const onceLiked = userPost.likes.find(userId => userId === loggedInUser._id)
+    const oncedisLiked = userPost.dislikes.find(userId => userId === loggedInUser._id)
+
+    if (onceLiked || oncedisLiked) {
+      fetch(`https://mysterious-sierra-15948.herokuapp.com/api/dislikePost`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ dislikedPost: postId, dislikedBy: loggedInUser._id })
       })
+        .then(res => res.json())
+        .then(data => {
+          fetch(`https://mysterious-sierra-15948.herokuapp.com/api/allPosts`)
+            .then(res => res.json())
+            .then(data => {
+              setAllPosts(data.reverse())
+              const userPosts = data.reverse().filter(posts => posts.email === userEmail)
+              setUserPosts(userPosts)
+              setLiked(false)
+              setDisLiked(true)
+              setReactingPost(false)
+            })
+        })
+    } else {
+      fetch(`https://mysterious-sierra-15948.herokuapp.com/api/dislikePost`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ dislikedPost: postId, dislikedBy: loggedInUser._id })
+      })
+        .then(res => res.json())
+        .then(data => {
+          const totalChips = loggedInUser.chips + 10;
+          fetch(`https://mysterious-sierra-15948.herokuapp.com/api/updateProfile`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ id: loggedInUser._id, chips: totalChips }),
+          })
+            .then(res => res.json())
+            .then(data => {
+              fetch(`https://mysterious-sierra-15948.herokuapp.com/api/allPosts`)
+                .then(res => res.json())
+                .then(data => {
+                  setAllPosts(data.reverse())
+                  const userPosts = data.reverse().filter(posts => posts.email === userEmail)
+                  setUserPosts(userPosts)
+                  setLiked(false)
+                  setDisLiked(true)
+                  setReactingPost(false)
+                })
+            })
+        })
+    }
   }
 
   return (
@@ -140,10 +216,10 @@ const ProfilePostCard = ({ username, userImg, userPost, userEmail, setUserPosts 
           <span style={{ color: "#00A3FF" }}>{userPost.likes?.length + userPost.dislikes?.length}</span> Reacts
         </p>
         <div className="react_btn_container">
-          <IconButton size="small" disabled={loggedInUser.email === userEmail ? true : liked ? true : false} onClick={() => likePost(userPost._id)}>
+          <IconButton size="small" disabled={reactingPost ? true : loggedInUser.email === userEmail ? true : liked ? true : false} onClick={() => likePost(userPost._id)}>
             <CgSmileMouthOpen className={liked ? 'react_btn text-success' : 'react_btn'} />
           </IconButton>
-          <IconButton size="small" disabled={loggedInUser.email === userEmail ? true : disLiked ? true : false} onClick={() => dislikePost(userPost._id)}>
+          <IconButton size="small" disabled={reactingPost ? true : loggedInUser.email === userEmail ? true : disLiked ? true : false} onClick={() => dislikePost(userPost._id)}>
             <CgSmileSad className={disLiked ? 'react_btn text-danger' : 'react_btn'} />
           </IconButton>
         </div>

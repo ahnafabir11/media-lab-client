@@ -113,7 +113,7 @@ const Profile = () => {
   return (
     <Container>
       <h4 className="page_title" style={{ minWidth: 0, display: 'flex' }}>
-        <Typography noWrap variant="span">{profileData.fullname}</Typography>'s Profile
+        <Typography noWrap variant="inherit">{profileData.fullname}</Typography>'s Profile
       </h4>
       <div className="profile_container">
         <div className="profile_details_top">

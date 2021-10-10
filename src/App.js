@@ -1,7 +1,7 @@
 import "./App.css";
 import Cookies from 'js-cookie';
 import { useState, createContext, useEffect } from "react";
-import { BrowserRouter as Router, Switch } from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import PrivateRoute from './PrivateRoute';
 import PrivateLogin from './PrivateLogin';
 import VerifiedUser from './VerifiedUser';
@@ -18,6 +18,7 @@ import LeaderBoard from "./pages/LeaderBoard/LeaderBoard";
 import UserVerification from './pages/UserVerificatioin/UserVerification';
 import Followers from "./pages/Followers/Followers";
 import WebsiteLoad from "./components/WebsiteLoad/WebsiteLoad";
+import WrongUrl from "./components/WrongUrl/WrongUrl";
 
 export const UserContext = createContext()
 export const PostContext = createContext()
@@ -32,12 +33,16 @@ function App() {
 
   useEffect(() => {
     const userId = Cookies.get('sid')
-    fetch(`https://mysterious-sierra-15948.herokuapp.com/api/users/${userId}`)
-      .then(res => res.json())
-      .then(data => {
-        setLoggedInUser(data)
-        setLoginDataLoaded(true)
-      })
+    if (userId) {
+      fetch(`https://mysterious-sierra-15948.herokuapp.com/api/users/${userId}`)
+        .then(res => res.json())
+        .then(data => {
+          setLoggedInUser(data)
+          setLoginDataLoaded(true)
+        })
+    } else {
+      setLoginDataLoaded(true)
+    }
 
     fetch(`https://mysterious-sierra-15948.herokuapp.com/api/allPosts`)
       .then(res => res.json())
@@ -49,49 +54,52 @@ function App() {
     fetch(`https://mysterious-sierra-15948.herokuapp.com/api/users`)
       .then(res => res.json())
       .then(data => setAllUsers(data))
-  }, [])
+  }, [loggedInUser.email])
 
   return (
     <UserContext.Provider value={[loggedInUser, setLoggedInUser]}>
       <PostContext.Provider value={[allPosts, setAllPosts]}>
         <AllUserContext.Provider value={[allUsers, setAllUsers]}>
           {
-            !loginDataLoaded ? <WebsiteLoad/> :
+            !loginDataLoaded ? <WebsiteLoad /> :
               <Router>
                 <Header />
                 <Switch>
-                  <VerifiedUser path="/leaderboard">
+                  <VerifiedUser path="/leaderboard" exact>
                     <LeaderBoard />
                   </VerifiedUser>
-                  <VerifiedUser path="/post/create">
+                  <VerifiedUser path="/post/create" exact>
                     <CreatePost />
                   </VerifiedUser>
-                  <VerifiedUser path="/followers/:id">
+                  <VerifiedUser path="/followers/:id" exact>
                     <Followers />
                   </VerifiedUser>
-                  <VerifiedUser path="/profile/edit">
+                  <VerifiedUser path="/profile/edit" exact>
                     <EditProfile />
                   </VerifiedUser>
-                  <VerifiedUser path="/profile/:id">
+                  <PrivateRoute path="/profile/:id" exact>
                     <Profile />
-                  </VerifiedUser>
-                  <VerifiedUser path="/users">
+                  </PrivateRoute>
+                  <VerifiedUser path="/users" exact>
                     <Users />
                   </VerifiedUser>
-                  <PrivateRoute path="/verify">
-                    <AntiVerify path="/verify">
+                  <PrivateRoute path="/verify" exact>
+                    <AntiVerify path="/verify" exact>
                       <UserVerification />
                     </AntiVerify>
                   </PrivateRoute>
-                  <PrivateLogin path="/register">
+                  <PrivateLogin path="/register" exact>
                     <Register />
                   </PrivateLogin>
-                  <PrivateLogin path="/login">
+                  <PrivateLogin path="/login" exact>
                     <Login />
                   </PrivateLogin>
-                  <VerifiedUser path="/">
+                  <Route path="/" exact>
                     <Activity dataLoaded={dataLoaded} />
-                  </VerifiedUser>
+                  </Route>
+                  <Route path="*">
+                    <WrongUrl />
+                  </Route>
                 </Switch>
               </Router>
           }

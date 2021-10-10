@@ -16,7 +16,7 @@ import { MdPeople } from "react-icons/md";
 import { MdPhotoLibrary } from "react-icons/md";
 import { MdExitToApp } from "react-icons/md";
 import { RiCopperCoinLine } from "react-icons/ri";
-import { UserContext } from '../../App';
+import { PostContext, UserContext } from '../../App';
 import { useHistory } from 'react-router';
 
 const useStyles = makeStyles((theme) => ({
@@ -48,6 +48,7 @@ const Header = () => {
   const classes = useStyles()
   const history = useHistory()
   const [loggedInUser, setLoggedInUser] = useContext(UserContext)
+  const [,setAllPosts] = useContext(PostContext)
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState(null)
 
   const navigatePage = (pageName) => {
@@ -59,6 +60,7 @@ const Header = () => {
     setMobileMoreAnchorEl(null)
     setLoggedInUser({})
     Cookies.remove('sid')
+    history.push('/login')
   }
 
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl)
