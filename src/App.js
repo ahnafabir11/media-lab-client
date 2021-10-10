@@ -77,9 +77,9 @@ function App() {
                   <VerifiedUser path="/profile/edit" exact>
                     <EditProfile />
                   </VerifiedUser>
-                  <PrivateRoute path="/profile/:id" exact>
+                  <VerifiedUser path="/profile/:id" exact>
                     <Profile />
-                  </PrivateRoute>
+                  </VerifiedUser>
                   <VerifiedUser path="/users" exact>
                     <Users />
                   </VerifiedUser>

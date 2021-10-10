@@ -42,7 +42,7 @@ const PostCard = ({ post, setAllPosts }) => {
   }
 
   const likePost = (postId) => {
-    if (loggedInUser.email) {
+    if (loggedInUser.email && loggedInUser.verified) {
       setReactingPost(true)
       const onceLiked = post.likes.find(userId => userId === loggedInUser._id)
       const oncedisLiked = post.dislikes.find(userId => userId === loggedInUser._id)
@@ -92,6 +92,9 @@ const PostCard = ({ post, setAllPosts }) => {
               })
           })
       }
+    } else if (loggedInUser.email && !loggedInUser.verified) {
+      setAlertMessage("Please verify you account first from profile")
+      setAlert(true)
     } else {
       setAlertMessage("Please login or register to React on the post")
       setAlert(true)
