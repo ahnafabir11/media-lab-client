@@ -37,12 +37,11 @@ const UserVerification = () => {
   const [loading, setLoading] = useState(false)
 
   const configurCaptcha = () => {
-    setLoading(true)
     setOtpsend(false)
     setSendOtpBtn(true)
     const auth = getAuth();
     const appVerifier = new RecaptchaVerifier('recaptcha-container', {}, auth)
-    const phoneNumber = "+880" + loggedInUser.phoneNumber;
+    const phoneNumber = loggedInUser.phoneNumber;
 
     signInWithPhoneNumber(auth, phoneNumber, appVerifier)
       .then((confirmationResult) => {
