@@ -2,40 +2,13 @@ import './UserCard.css';
 import moment from 'moment';
 import React, { useContext, useEffect, useState } from 'react';
 import { Avatar, Button } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
 import { RiCopperCoinLine } from "react-icons/ri";
 import { useHistory } from 'react-router-dom';
 import noProfileImg from '../../images/no-profile.png';
 import { UserContext } from '../../App';
 import Typography from '@material-ui/core/Typography';
 
-const useStyles = makeStyles({
-  followBtn: {
-    backgroundColor: '#00A3FF',
-    color: "#fff",
-    fontWeight: 700,
-    textTransform: 'capitalize',
-    margin: '10px auto',
-    display: 'block',
-    "&:hover": {
-      backgroundColor: '#0087d3'
-    }
-  },
-  followingBtn: {
-    backgroundColor: '#00a3ff3d',
-    color: '#fff',
-    fontWeight: 700,
-    textTransform: 'capitalize',
-    margin: '10px auto',
-    display: 'block',
-    "&:hover": {
-      backgroundColor: '#00a3ff3d'
-    }
-  }
-})
-
 const UserCard = ({ user, setAllUsers }) => {
-  const classes = useStyles()
   const history = useHistory()
   const [loggedInUser] = useContext(UserContext)
   const [followed, setFollowed] = useState(false)
@@ -99,14 +72,16 @@ const UserCard = ({ user, setAllUsers }) => {
               variant="contained"
               size="small"
               disabled={loggedInUser._id === user._id ? true : false}
-              className={classes.followingBtn}
+              color="secondary"
+              className="mx-auto my-2 d-block"
               onClick={() => unFollowUser(user._id)}
             >Following</Button> :
             <Button
               variant="contained"
               size="small"
               disabled={loggedInUser._id === user._id ? true : false}
-              className={classes.followBtn}
+              color="primary"
+              className="mx-auto my-2 d-block"
               onClick={() => followUser(user._id)}
             >Follow</Button>
         }

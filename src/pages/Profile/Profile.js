@@ -16,40 +16,7 @@ import ProfilePostCard from "../../components/ProfilePostCard/ProfilePostCard";
 import noProfileImg from '../../images/no-profile.png';
 import Skeleton, { SkeletonTheme } from 'react-loading-skeleton';
 
-const useStyles = makeStyles({
-  followBtn: {
-    flex: 1,
-    backgroundColor: "#00A3FF",
-    color: "#fff",
-    fontWeight: 700,
-    textTransform: "capitalize",
-    "&:hover": {
-      backgroundColor: "#0087d3",
-    },
-  },
-  followingBtn: {
-    flex: 1,
-    color: "#fff",
-    backgroundColor: "#00a3ff3d",
-    fontWeight: 700,
-    textTransform: "capitalize",
-    "&:hover": {
-      backgroundColor: '#00a3ff3d'
-    }
-  },
-  typoText: {
-    fontSize: "1.5rem",
-    letterSpacing: "5px",
-    borderBottom: "1px dashed #fff",
-    padding: "0.5em 0",
-    marginBottom: ".5rem",
-    fontWeight: 500,
-    lineHeight: 1.2,
-  }
-});
-
 const Profile = () => {
-  const classes = useStyles()
   const { id } = useParams()
   const history = useHistory()
   const [dataLoaded, setDataLoaded] = useState(false)
@@ -175,8 +142,8 @@ const Profile = () => {
               followed === true ?
                 <Button
                   variant="contained"
-                  color="primary"
-                  className={classes.followingBtn}
+                  color="secondary"
+                  className="flex-fill"
                   onClick={() => unFollowUser(profileData._id)}
                 >
                   Following
@@ -184,7 +151,7 @@ const Profile = () => {
                 <Button
                   variant="contained"
                   color="primary"
-                  className={classes.followBtn}
+                  className="flex-fill"
                   onClick={() => followUser(profileData._id)}
                 >
                   Follow
@@ -199,7 +166,7 @@ const Profile = () => {
                 href={profileData?.social?.fbLink}
                 target="blank"
               >
-                <FaFacebookSquare size="40px" style={{ color: "#00A3FF" }} />
+                <FaFacebookSquare size="40px" color="#00A3FF" />
               </IconButton>
             </Tooltip>
 
@@ -209,7 +176,7 @@ const Profile = () => {
                 href={profileData?.social?.igLink}
                 target="blank"
               >
-                <FaInstagramSquare size="40px" style={{ color: "#00A3FF" }} />
+                <FaInstagramSquare size="40px" color="#00A3FF" />
               </IconButton>
             </Tooltip>
 
@@ -222,7 +189,7 @@ const Profile = () => {
                     target="blank"
                     onClick={() => history.push('/post/create')}
                   >
-                    <MdAddAPhoto size="40px" style={{ color: "#00A3FF" }} />
+                    <MdAddAPhoto size="40px" color="#00A3FF" />
                   </IconButton>
                 </Tooltip>
 
@@ -232,7 +199,7 @@ const Profile = () => {
                     target="blank"
                     onClick={() => history.push(`/profile/edit`)}
                   >
-                    <FaUserEdit size="40px" style={{ color: "#ffc107" }} />
+                    <FaUserEdit size="40px" color="#ffc107" />
                   </IconButton>
                 </Tooltip>
               </>
