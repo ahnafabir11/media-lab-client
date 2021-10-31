@@ -32,7 +32,7 @@ const EditProfile = () => {
             formData.append('file', profileImgFile)
             formData.append('upload_preset', 'medialab')
 
-            fetch('	https://api.cloudinary.com/v1_1/dpjc6l7je/image/upload', {
+            fetch('https://api.cloudinary.com/v1_1/dpjc6l7je/image/upload', {
                 method: 'POST',
                 body: formData
             })

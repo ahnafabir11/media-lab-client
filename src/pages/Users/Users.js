@@ -3,6 +3,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import { Container } from 'react-bootstrap';
 import UserCard from './../../components/UserCard/UserCard';
 import { UserContext, AllUserContext } from '../../App';
+import { getAnalytics, logEvent } from "firebase/analytics";
 
 const Users = () => {
   const [loggedInUser] = useContext(UserContext)
@@ -13,6 +14,9 @@ const Users = () => {
     const users = allUsers.filter(user => user.email !== loggedInUser.email)
     setAllUsersData(users)
   }, [allUsers])
+  
+  const analytics = getAnalytics();
+  logEvent(analytics, 'users page');
 
   return (
     <Container>

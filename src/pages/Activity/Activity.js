@@ -5,6 +5,8 @@ import Masonry from 'react-masonry-css';
 import { Container } from 'react-bootstrap';
 import PostCard from '../../components/PostCard/PostCard';
 import SkeletonCard from '../../components/SkeletonCard/SkeletonCard';
+import { getAnalytics, logEvent } from "firebase/analytics";
+
 
 const Activity = ({ dataLoaded }) => {
   const [allPosts, setAllPosts] = useContext(PostContext)
@@ -14,6 +16,9 @@ const Activity = ({ dataLoaded }) => {
     993: 2,
     767: 1
   }
+
+  const analytics = getAnalytics();
+  logEvent(analytics, 'activity page');
 
   return (
     <Container>

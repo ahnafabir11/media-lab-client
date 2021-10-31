@@ -53,7 +53,7 @@ const CreatePost = () => {
         formData.append('upload_preset', 'medialabpost')
         setLoading(true)
 
-        fetch('	https://api.cloudinary.com/v1_1/dpjc6l7je/image/upload', {
+        fetch('https://api.cloudinary.com/v1_1/dpjc6l7je/image/upload', {
           method: 'POST',
           body: formData
         })

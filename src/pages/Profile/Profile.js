@@ -5,7 +5,6 @@ import { useParams } from "react-router";
 import { useHistory } from "react-router-dom";
 import { Container } from "react-bootstrap";
 import { Button, IconButton, Tooltip, Typography } from "@material-ui/core";
-import { makeStyles } from "@material-ui/core/styles";
 import { RiCopperCoinLine } from "react-icons/ri";
 import { FaFacebookSquare } from "react-icons/fa";
 import { FaInstagramSquare } from "react-icons/fa";
@@ -15,6 +14,7 @@ import { PostContext, UserContext } from "../../App";
 import ProfilePostCard from "../../components/ProfilePostCard/ProfilePostCard";
 import noProfileImg from '../../images/no-profile.png';
 import Skeleton, { SkeletonTheme } from 'react-loading-skeleton';
+import { getAnalytics, logEvent } from "firebase/analytics";
 
 const Profile = () => {
   const { id } = useParams()
@@ -76,6 +76,9 @@ const Profile = () => {
           })
       })
   }
+
+  const analytics = getAnalytics();
+  logEvent(analytics, 'profile page');
 
   return (
     <Container>

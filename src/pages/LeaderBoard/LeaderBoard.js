@@ -7,6 +7,7 @@ import ButtonGroup from '@material-ui/core/ButtonGroup';
 import { Avatar } from '@material-ui/core';
 import { useHistory } from 'react-router';
 import { AllUserContext } from '../../App';
+import { getAnalytics, logEvent } from "firebase/analytics";
 
 const LeaderBoard = () => {
   const history = useHistory()
@@ -32,6 +33,9 @@ const LeaderBoard = () => {
       setUserData(sortedUser)
     }
   }
+
+  const analytics = getAnalytics();
+  logEvent(analytics, 'leaderboard page');
 
   return (
     <Container>
